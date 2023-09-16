@@ -1,23 +1,37 @@
-import axios from "axios"
-import express from "express"
+import axios from "axios";
+import express from "express";
+import fs from "fs";
 
 const router = express.Router();
 router.get("/", async (req, res) => {
-    const apiUrl = 'https://api-inference.huggingface.co/models/jonatasgrosman/wav2vec2-large-xlsr-53-english';
+  const API_URL =
+    "https://api-inference.huggingface.co/models/jonatasgrosman/wav2vec2-large-xlsr-53-english";
+  const API_KEY = "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";
+  const filename = "./ASR/short_lecture.mp3";
 
-    const { data } = req.read()
-    const headers = {
-        "Authorization": "Bearer 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"
-    };
+  async function query() {
+    try {
+      const data = fs.readFileSync(filename);
+      const headers = {
+        Authorization: `Bearer ${API_KEY}`,
+        "Content-Type": "application/octet-stream",
+      };
 
-    axios.post(apiUrl, headers=headers, data=data)
-    .then(function (response) {
-        res.status(200).send(response.json)
-        console.log('Response:', response.json);
+      const response = await axios.post(API_URL, data, { headers });
+      return response.data;
+    } catch (error) {
+      console.error("Error:", error.message);
+      throw error;
+    }
+  }
+
+  query()
+    .then((output) => {
+      console.log(output);
     })
-    .catch(function (error) {
-        console.error('Error:', error);
+    .catch((error) => {
+      console.error("Error:", error.message);
     });
-})
+});
 
-export default router
+export default router;

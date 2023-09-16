@@ -18,6 +18,6 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello world!" });
 });
 
-app.use("/api/transcribe", )
+app.use("/api/transcribe", transcribeRouter)
 app.use("/api/summarize", summarizeRouter);
 app.listen(port, () => console.log(`Server listening on port ${port}`));
