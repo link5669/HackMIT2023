@@ -5,6 +5,9 @@ const router = express.Router();
 router.get("/", async (req, res) => {
     const apiUrl = 'https://us-south.ml.cloud.ibm.com/ml/v1-beta/generation/text?version=2023-05-29';
 
+
+    const { transcript } = req.query
+    console.log(transcript)
     const headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -12,7 +15,7 @@ router.get("/", async (req, res) => {
     }
     const requestData = {
     "model_id": "google/flan-ul2",
-    "input": "This is a transcript from a college lecture. Summarize the entire lecture using multiple bullet points\
+    "input": `This is a transcript from a college lecture. Summarize the entire lecture using multiple bullet points\
      \\n\\nQuestion:\\nSo, of course, there's two different things as always. There is the region of integration and there's \
      the function we are integrating. Now, the function we are integrating, well, it will come in handy when you actually try to \
      evaluate the integral. But, as you can see, probably, the new part is really hard to set it up. So, the function won't really \
@@ -38,12 +41,7 @@ router.get("/", async (req, res) => {
      I'd say that 90 or above corresponds to an A. 80 or above corresponds to a B. 65 or above corresponds to a C. But, again, I mean, \
      nothing is set in stone. That depends a lot on how you do on homework, and things like that. So, don't take these values too \
      seriously. If you got less than 65, then you should definitely take and make up, and also if you were absent for some reason \
-     yesterday.\\nSo, I have solutions here. If you don't have them yet, and you can just pick them up at the end of class. \
-     I also have spare copies of problem sets, and solutions. But you should have got them yesterday. So, all right, so the past few\
-      weeks, we've been looking at double integrals and the plane, line integrals in the plane, and will we are going to do now from \
-      now on basically until the end of the term, will be very similar stuff, but in space. So, we are going to learn how to do triple \
-      integrals in space, flux in space, work in space, divergence, curl, all that.\\nSo, that means, basically, if you were really on \
-      top of what we've been doing these past few weeks, then it will be just the same with one more coordinate. And, you will see there are some differences. But, conceptually, it's pretty similar. There are a few tricky things, though. Now, that also means that if there is stuff that you are not sure about in the plane, then I encourage you to review the material that we've done over the past few weeks to make sure that everything in the plane is completely clear to you because it will be much harder to understand stuff in space if things are still shaky in the plane. OK, so the plan is we're going to basically go through the same stuff, but in space.\\nSo, it shouldn't be surprising that we will start today with triple integrals. OK, so the way triple integrals work is if I give you a function of three variables, x, y, z, and I give you some region in space, so, some solid, then I can take the integral over this region over function f dV where dV stands for the volume element. OK, so what it means is we will just take every single little piece of our solid, take the value of f there, multiply by the small volume of each little piece, and sum all these things together.\\nAnd, so this volume element here, well, for example, if you are doing the integral in rectangular coordinates, that will become dx dy dz or any permutation of that because, of course, we have lots of possible orders of integration to choose from. So, rather than bore you with theory and all sorts of complicated things, let's just do examples. And, you will see, basically, if you understand how to set up iterated integrals into variables, that you basically understand how to do them in three variables. You just have to be a bit more careful. And, there's one more step. OK, so let's take our first triple integral to be on the region.\\n\\nAnswer:\\n",
+     yesterday.\\n ${transcript} \\n\\nAnswer:\\n`,
     "parameters": {
         "decoding_method": "greedy",
         "max_new_tokens": 100,
@@ -56,7 +54,8 @@ router.get("/", async (req, res) => {
 
     axios.post(apiUrl, requestData, { headers })
     .then(function (response) {
-        res.send(response.data.results[0].generated_text)
+        // res.set('Access-Control-Allow-Origin', '*')
+        res.status(200).send(response.data.results[0].generated_text)
         console.log('Response:', response.data);
     })
     .catch(function (error) {
