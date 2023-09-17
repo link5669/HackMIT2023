@@ -54,7 +54,7 @@ export default function Home() {
                 },
               })
               .then((e) => {
-                console.log(e.data);
+                console.log("summary" + e.data);
                 setSummary(e.data);
               });
           });
@@ -88,8 +88,18 @@ export default function Home() {
       <div className="flex justify-center">
         <input type="file" onChange={handleFileChange} />
       </div>
-      {transcript && <Transcript transcript={transcript} />}
-      {summary && <Transcript transcript={summary} />}
+      {transcript && (
+        <div className="px-10">
+          <h2><b>Transcript:</b></h2>
+          {transcript}
+        </div>
+      )}
+      {summary && (
+        <div className="px-10">
+          <h2><b>Summary:</b></h2>
+          <Transcript transcript={summary} />
+        </div>
+      )}
     </>
   );
 }

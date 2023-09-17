@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
 
   query()
     .then((output) => {
-        console.log(output)
+        console.log("transcribe" + output)
       res.status(200).send(output)
     })
     .catch((error) => {
