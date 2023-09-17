@@ -1,21 +1,23 @@
-import axios from "axios"
-import express from "express"
+import axios from "axios";
+import express from "express";
 
 const router = express.Router();
 router.get("/", async (req, res) => {
-    const apiUrl = 'https://us-south.ml.cloud.ibm.com/ml/v1-beta/generation/text?version=2023-05-29';
+  const apiUrl =
+    "https://us-south.ml.cloud.ibm.com/ml/v1-beta/generation/text?version=2023-05-29";
 
+  const { transcript } = req.query;
 
-    const { transcript } = req.query
-    console.log(transcript)
-    const headers = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer eyJraWQiOiIyMDIzMDkwODA4MzQiLCJhbGciOiJSUzI1NiJ9.eyJpYW1faWQiOiJJQk1pZC02OTEwMDA0UTRIIiwiaWQiOiJJQk1pZC02OTEwMDA0UTRIIiwicmVhbG1pZCI6IklCTWlkIiwianRpIjoiNDNlZGFjYWItNzk5Yi00YjFjLThkMGItZTU0YmQ3OTQyYmJlIiwiaWRlbnRpZmllciI6IjY5MTAwMDRRNEgiLCJnaXZlbl9uYW1lIjoiTWlsZXMiLCJmYW1pbHlfbmFtZSI6IkFjcXVhdml2YSIsIm5hbWUiOiJNaWxlcyBBY3F1YXZpdmEiLCJlbWFpbCI6Im1kYTE0NEBzY2FybGV0bWFpbC5ydXRnZXJzLmVkdSIsInN1YiI6Im1kYTE0NEBzY2FybGV0bWFpbC5ydXRnZXJzLmVkdSIsImF1dGhuIjp7InN1YiI6Im1kYTE0NEBzY2FybGV0bWFpbC5ydXRnZXJzLmVkdSIsImlhbV9pZCI6IklCTWlkLTY5MTAwMDRRNEgiLCJuYW1lIjoiTWlsZXMgQWNxdWF2aXZhIiwiZ2l2ZW5fbmFtZSI6Ik1pbGVzIiwiZmFtaWx5X25hbWUiOiJBY3F1YXZpdmEiLCJlbWFpbCI6Im1kYTE0NEBzY2FybGV0bWFpbC5ydXRnZXJzLmVkdSJ9LCJhY2NvdW50Ijp7InZhbGlkIjp0cnVlLCJic3MiOiI3YjJjZGRmZGE0ZTE0M2Q5YTAxM2RkNjYyZmM1NmE1YyIsImltc191c2VyX2lkIjoiMTEzNjgzMzEiLCJmcm96ZW4iOnRydWUsImltcyI6IjI3MDc5NTcifSwiaWF0IjoxNjk0ODk3NTk3LCJleHAiOjE2OTQ5MDExOTcsImlzcyI6Imh0dHBzOi8vaWFtLmNsb3VkLmlibS5jb20vaWRlbnRpdHkiLCJncmFudF90eXBlIjoidXJuOmlibTpwYXJhbXM6b2F1dGg6Z3JhbnQtdHlwZTphcGlrZXkiLCJzY29wZSI6ImlibSBvcGVuaWQiLCJjbGllbnRfaWQiOiJkZWZhdWx0IiwiYWNyIjoxLCJhbXIiOlsicHdkIl19.HLL20LOmBnrp5gHfhuvGBxhxLmGIQ9aHUyZA7Aua9AONTfe_YeCINSoM1_L2Nvxj__WQoro9ww1ajbHTvDALc6Ki9WpytuogL7mvyNJ6t-XeXjyCMbZC5cJgFPOvxfMRkIUHwbuwRS4fPJGfZm6kPdVU4w1ShkMyDTHNrbQFIt74Xx_XfpMZXjCZeX6avXbwwN6arSQJ0egu8P4fmYV7SojbWEM--ZSnpszrUbDBzqU9cRA46UG_J-cb8rEPDZ7gZSRVPMgdp4xSEDLCKEVHD_VvmIXXWtW-SUmeldtTRwbV2vNWjzbdUPaK0EGVqOlOlpuaG5AJ6cz5fEpi2Kh_ng'
-    }
-    const requestData = {
-    "model_id": "google/flan-ul2",
-    "input": `This is a transcript from a college lecture. Summarize the entire lecture using multiple bullet points\
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization:
+      "Bearer eyJraWQiOiIyMDIzMDkwODA4MzQiLCJhbGciOiJSUzI1NiJ9.eyJpYW1faWQiOiJJQk1pZC02OTEwMDA0UTRIIiwiaWQiOiJJQk1pZC02OTEwMDA0UTRIIiwicmVhbG1pZCI6IklCTWlkIiwianRpIjoiOTQ2OGNhYTItZDFjMy00MmYyLWE0MTctZTVkNWM5MGYwMjFkIiwiaWRlbnRpZmllciI6IjY5MTAwMDRRNEgiLCJnaXZlbl9uYW1lIjoiTWlsZXMiLCJmYW1pbHlfbmFtZSI6IkFjcXVhdml2YSIsIm5hbWUiOiJNaWxlcyBBY3F1YXZpdmEiLCJlbWFpbCI6Im1kYTE0NEBzY2FybGV0bWFpbC5ydXRnZXJzLmVkdSIsInN1YiI6Im1kYTE0NEBzY2FybGV0bWFpbC5ydXRnZXJzLmVkdSIsImF1dGhuIjp7InN1YiI6Im1kYTE0NEBzY2FybGV0bWFpbC5ydXRnZXJzLmVkdSIsImlhbV9pZCI6IklCTWlkLTY5MTAwMDRRNEgiLCJuYW1lIjoiTWlsZXMgQWNxdWF2aXZhIiwiZ2l2ZW5fbmFtZSI6Ik1pbGVzIiwiZmFtaWx5X25hbWUiOiJBY3F1YXZpdmEiLCJlbWFpbCI6Im1kYTE0NEBzY2FybGV0bWFpbC5ydXRnZXJzLmVkdSJ9LCJhY2NvdW50Ijp7InZhbGlkIjp0cnVlLCJic3MiOiI3YjJjZGRmZGE0ZTE0M2Q5YTAxM2RkNjYyZmM1NmE1YyIsImltc191c2VyX2lkIjoiMTEzNjgzMzEiLCJmcm96ZW4iOnRydWUsImltcyI6IjI3MDc5NTcifSwiaWF0IjoxNjk0OTUzNTY3LCJleHAiOjE2OTQ5NTcxNjcsImlzcyI6Imh0dHBzOi8vaWFtLmNsb3VkLmlibS5jb20vaWRlbnRpdHkiLCJncmFudF90eXBlIjoidXJuOmlibTpwYXJhbXM6b2F1dGg6Z3JhbnQtdHlwZTphcGlrZXkiLCJzY29wZSI6ImlibSBvcGVuaWQiLCJjbGllbnRfaWQiOiJkZWZhdWx0IiwiYWNyIjoxLCJhbXIiOlsicHdkIl19.hM3By-RgEjjW_eAJ0eh58PrjJ38y-9uiv4ZsCjVZVZeqdE6uIvk9h-54oAda8JXRy-BhFAnc0CzYKIQxW77Cf9CHemkc5OZ-gCWeYk7oaL-BALxFEdnJRutu8UVl-EkSQ8mKIX3tI-i7TnjfNz6t8lq9amONDwwSo7Brjfi6n5SkcpJE4sQOy0_Evjz1fRlTbPbM3zMoRtJEtT8uO3ac-xElMo2KshyoMbEPoToI4hcN2O7ujwVaDsIP4voiDr5RqWKTCxwzluIcvOxagGI7MtOVt3dBX11sQZQu3N1qISUHAhDY_YfhdqIwdrKNU4NPTlOPDoXycNbFvcSRuDNcGQ",
+  };
+  
+  const requestData = {
+    model_id: "google/flan-ul2",
+    input: `This is a transcript from a college lecture. Summarize the entire lecture using multiple bullet points\
      \\n\\nQuestion:\\nSo, of course, there's two different things as always. There is the region of integration and there's \
      the function we are integrating. Now, the function we are integrating, well, it will come in handy when you actually try to \
      evaluate the integral. But, as you can see, probably, the new part is really hard to set it up. So, the function won't really \
@@ -62,26 +64,27 @@ router.get("/", async (req, res) => {
      them.\\n- The inner integral has been addressed by considering the bounds when slicing the solid with vertical lines, taking into \
      account both middle and outer variables.\\n- Determining the values of x and y of interest involves considering all those within the \
      shaded region.\\n- To establish the bounds for the middle and outer integrals, the lecturer plans to project the solid, visualizing \
-     it as a specific shape.\\n\nQuestion:\\n${transcript} \\n\\nAnswer:\\n`,
-    "parameters": {
-        "decoding_method": "greedy",
-        "max_new_tokens": 100,
-        "min_new_tokens": 0,
-        "stop_sequences": [],
-        "repetition_penalty": 1
+     it as a specific shape.\\n\nQuestion:\\nDerivatives are the uhhhhh \\n\\nAnswer:\\n`,
+    parameters: {
+      decoding_method: "greedy",
+      max_new_tokens: 100,
+      min_new_tokens: 0,
+      stop_sequences: [],
+      repetition_penalty: 1,
     },
-    "project_id": "9a87b0b3-3cd9-4b66-b54a-bc30df9edcf5"
-    };
+    project_id: "9a87b0b3-3cd9-4b66-b54a-bc30df9edcf5",
+  };
 
-    axios.post(apiUrl, requestData, { headers })
+  axios
+    .post(apiUrl, requestData, { headers })
     .then(function (response) {
-        res.set('Access-Control-Allow-Origin', '*');
-        res.status(200).send(response.data.results[0].generated_text)
-        console.log('Response:', response.data);
+      res.set("Access-Control-Allow-Origin", "*");
+      res.status(200).send(response.data.results[0].generated_text);
+      console.log("Response:", response.data);
     })
     .catch(function (error) {
-        console.error('Error:', error);
+      console.error("Error:", error);
     });
-})
+});
 
-export default router
+export default router;

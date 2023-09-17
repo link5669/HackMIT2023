@@ -9,8 +9,8 @@ dotenv.config();
 const router = express.Router();
 router.get("/", async (req, res) => {
   async function query() {
-    const { topic } = req.topic;
-    const { point } = req.point;
+    const topic = req.query.topic
+    const point = req.query.point
 
     const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY,});
     const response = await openai.chat.completions.create({
@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
   }
   query()
     .then((output) => {
-      console.log(output);
+      res.status(200).send(output)
     })
     .catch((error) => {
       console.error("Error:", error.message);

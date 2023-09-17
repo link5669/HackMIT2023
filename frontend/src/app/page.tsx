@@ -1,4 +1,5 @@
 "use client";
+"use client";
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
@@ -7,6 +8,8 @@ import { Transcript } from "./components/transcript";
 export default function Home() {
   const [inputValue, setInputValue] = useState("");
   const [response, setResponse] = useState("");
+  const [transcript, setTranscript] = useState("");
+  const [summary, setSummary] = useState("")
 
   const handleInputChange = (e: any) => {
     setInputValue(e.target.value);
@@ -16,12 +19,50 @@ export default function Home() {
     axios
       .get("http://localhost:5001/api/summarize", {
         params: {
-          transcript: inputValue,
+          transcript: fileName,
         },
       })
       .then((e) => {
         setResponse(e.data);
       });
+  };
+
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleUpload = () => {
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    axios
+      .post("http://localhost:5001/api/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(() => {
+        axios
+          .get("http://localhost:5001/api/transcribe", {
+            params: {
+              filename: selectedFile.name,
+            },
+          })
+          .then((e) => {
+            setTranscript(e.data.text);
+            axios
+            .get("http://localhost:5001/api/summarize", {
+              params: {
+                transcript: e.data.text,
+              },
+            })
+            .then((e) => {
+              console.log(e.data)
+              setSummary(e.data)
+            });
+          })
+      });
+  };
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
   };
 
   return (
@@ -60,18 +101,16 @@ export default function Home() {
       <br />
       <div className="flex justify-center">
         <br />
-        <input
-          value={inputValue}
-          onChange={handleInputChange}
-          className="shadow appearance-none border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        />
         <button className="p-l2" onClick={handleSubmit}>
           Submit
         </button>
       </div>
-      {response && (
-          <Transcript transcript={response} />
-      )}
+      {transcript && <Transcript transcript={transcript} />}
+      {summary && <Transcript transcript={summary} />}
+
+      <h2>File Upload</h2>
+      <input type="file" onChange={handleFileChange} />
+      <button onClick={handleUpload}>Upload</button>
     </>
   );
 }
