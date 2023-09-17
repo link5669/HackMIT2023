@@ -9,7 +9,7 @@ export default function Home() {
   const [inputValue, setInputValue] = useState("");
   const [response, setResponse] = useState("");
   const [transcript, setTranscript] = useState("");
-  const [summary, setSummary] = useState("")
+  const [summary, setSummary] = useState("");
 
   const handleInputChange = (e: any) => {
     setInputValue(e.target.value);
@@ -48,16 +48,16 @@ export default function Home() {
           .then((e) => {
             setTranscript(e.data.text);
             axios
-            .get("http://localhost:5001/api/summarize", {
-              params: {
-                transcript: e.data.text,
-              },
-            })
-            .then((e) => {
-              console.log(e.data)
-              setSummary(e.data)
-            });
-          })
+              .get("http://localhost:5001/api/summarize", {
+                params: {
+                  transcript: e.data.text,
+                },
+              })
+              .then((e) => {
+                console.log(e.data);
+                setSummary(e.data);
+              });
+          });
       });
   };
 
@@ -77,40 +77,19 @@ export default function Home() {
       <div className="flex justify-center">
         {" "}
         <a
+          onClick={handleUpload}
           href="#"
           className="inline-flex content-center justify-center px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
         >
-          Learn more
-          <svg
-            className="w-3.5 h-3.5 ml-2"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 10"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M1 5h12m0 0L9 1m4 4L9 9"
-            />
-          </svg>
+          Upload
         </a>
       </div>
       <br />
       <div className="flex justify-center">
-        <br />
-        <button className="p-l2" onClick={handleSubmit}>
-          Submit
-        </button>
+        <input type="file" onChange={handleFileChange} />
       </div>
       {transcript && <Transcript transcript={transcript} />}
       {summary && <Transcript transcript={summary} />}
-
-      <h2>File Upload</h2>
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload</button>
     </>
   );
 }
