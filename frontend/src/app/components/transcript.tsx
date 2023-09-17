@@ -1,4 +1,4 @@
-export const Transcript = ({ transcript }) => {
+export const Transcript = (transcript: any) => {
   transcript = " - " + transcript;
   const formattedTranscript = transcript.replace(/-/g, "<br /> - ");
 

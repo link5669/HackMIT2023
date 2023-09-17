@@ -8,7 +8,7 @@ export default function Home() {
   const [inputValue, setInputValue] = useState("");
   const [response, setResponse] = useState("");
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: any) => {
     setInputValue(e.target.value);
   };
 
